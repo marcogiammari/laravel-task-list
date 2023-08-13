@@ -13,12 +13,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index', [
-        'name' => 'Marco'
-    ]);
-})->name('homepage');
+class Task
+{
+    public function __construct(
+        public int $id,
+        public string $title,
+        public bool $completed,
+    ) {
+    }
+}
 
-Route::get('/prova', function () {
-    return redirect()->route('homepage');
+$tasks = [
+    new Task(1, 'Fare la spesa', false),
+    new Task(2, 'Pulire casa', false),
+    new Task(3, 'Studiare Laravel', true)
+];
+
+Route::get('/', function () use ($tasks) {
+    return view('index', [
+        'tasks' => $tasks
+    ]);
+})->name('tasks.index');
+
+
+Route::get('/{id}', function ($id) {
+    return 'One single task';
+})->name('tasks.show');
+
+Route::get('/redirect-example', function () {
+    return redirect()->route('tasks.index');
+});
+
+Route::fallback(function () {
+    return '404: questa rotta non esiste';
 });
