@@ -11,9 +11,17 @@
 <body>
     <a href="{{ route('tasks.index') }}">
         <h1>
-            @yield('title')
+            Home
         </h1>
     </a>
+    <a href="{{ route('tasks.create') }}">
+        <h1>
+            New Task
+        </h1>
+    </a>
+    <h1>
+        @yield('title')
+    </h1>
     <div>
         @yield('content')
     </div>

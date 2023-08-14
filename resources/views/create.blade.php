@@ -4,6 +4,9 @@
 
 @section('content')
 
+    {{-- laravel restituisce un oggetto $errors che contiene tutti gli errori generati dalla validazione --}}
+    {{-- {{ $errors }} --}}
+
     <form action="{{ route('tasks.store') }}" method="post">
         @csrf
         <div>

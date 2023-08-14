@@ -58,7 +58,19 @@ Route::get('/tasks/{id}', function ($id) {
 
 // la classe Request ci permette di accedere alla request tramite metodi come all()
 Route::post('/tasks/store', function (Request $request) {
-    dd('Questa è la rotta store e la request è: ', $request->all());
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required'
+    ]);
+
+    $task = new Task;
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+    // il metodo save() esegue un insert query se hai creato un model, altrimenti esegue un update query 
+    $task->save();
+    return redirect()->route('tasks.show', ['id' => $task->id]);
 })->name('tasks.store');
 
 // Route::get('/redirect-example', function () {
