@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -14,42 +15,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-class Task
-{
-    public function __construct(
-        public int $id,
-        public string $title,
-        public  ?string $desc,
-        public bool $completed,
-    ) {
-    }
-}
+// class Task
+// {
+//     public function __construct(
+//         public int $id,
+//         public string $title,
+//         public  ?string $desc,
+//         public bool $completed,
+//     ) {
+//     }
+// }
 
-$tasks = [
-    new Task(1, 'Fare la spesa', 'Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullamco laboriosam, nisi ut aliquid ex ea commodi consequatur.', false),
-    new Task(2, 'Pulire casa', 'Duis aute irure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', false),
-    new Task(3, 'Studiare Laravel', null, true)
-];
+// $tasks = [
+//     new Task(1, 'Fare la spesa', 'Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullamco laboriosam, nisi ut aliquid ex ea commodi consequatur.', false),
+//     new Task(2, 'Pulire casa', 'Duis aute irure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', false),
+//     new Task(3, 'Studiare Laravel', null, true)
+// ];
 
 Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
-Route::get('/tasks', function () use ($tasks) {
+Route::get('/tasks', function () {
     return view('index', [
-        'tasks' => $tasks
+        // ordina i dati in base alla colonna "created at"
+        'tasks' => Task::latest()->where('completed', true)->get()
+
+        // possiamo incatenare diversi metodi nella nostra query: where, select... in questo caso si parla di "query builder"
+        // Task::latest()->where('completed', true)->get()
+        // Task::select('id', 'title')->where('completed', true)->get()
     ]);
 })->name('tasks.index');
 
 
-Route::get('/tasks/{id}', function ($id) use ($tasks) {
-    $task = collect($tasks)->firstWhere('id', $id);
-
-    if (!$task) {
-        abort(Response::HTTP_NOT_FOUND);
-    }
-
-    return view('show', ['task' => $task]);
+Route::get('/tasks/{id}', function ($id) {
+    // riporta alla pagina 404 se non trova l'id nel db
+    return view('show', ['task' => Task::findOrFail($id)]);
 })->name('tasks.show');
 
 Route::get('/redirect-example', function () {

@@ -3,8 +3,8 @@
 @section('title', $task->title)
 
 @section('content')
-    @if ($task->desc)
-        <p>{{ $task->desc }}</p>
+    @if ($task->long_description)
+        <p>{{ $task->long_description }}</p>
     @else
         No Description
     @endif
