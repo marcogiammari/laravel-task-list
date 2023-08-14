@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -47,15 +48,22 @@ Route::get('/tasks', function () {
     ]);
 })->name('tasks.index');
 
+Route::view('/tasks/create', 'create')->name('tasks.create');
 
+// le rotte che prendono parametri vanno messe dopo le altre rotte che hanno lo stesso path -> altrimenti una rotta come /tasks/create verrebbe catturata da /task/{id}
 Route::get('/tasks/{id}', function ($id) {
     // riporta alla pagina 404 se non trova l'id nel db
     return view('show', ['task' => Task::findOrFail($id)]);
 })->name('tasks.show');
 
-Route::get('/redirect-example', function () {
-    return redirect()->route('tasks.index');
-});
+// la classe Request ci permette di accedere alla request tramite metodi come all()
+Route::post('/tasks/store', function (Request $request) {
+    dd('Questa è la rotta store e la request è: ', $request->all());
+})->name('tasks.store');
+
+// Route::get('/redirect-example', function () {
+//     return redirect()->route('tasks.index');
+// });
 
 Route::fallback(function () {
     return '404: questa rotta non esiste';
