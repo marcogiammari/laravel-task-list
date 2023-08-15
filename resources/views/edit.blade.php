@@ -28,7 +28,10 @@
             <label for="title">
                 Title
             </label>
-            <input type="text" name="title" id="title" value="{{ $task->title }}">
+
+            {{-- qui l'old va usato con il null coalescing operator --}}
+
+            <input type="text" name="title" id="title" value="{{ old('title') ?? $task->title }}">
             @error('title')
                 <p class="error-message">{{ $message }}</p>
             @enderror
@@ -37,7 +40,7 @@
             <label for="description">
                 Description
             </label>
-            <textarea name="description" id="description" rows="5">{{ $task->description }}
+            <textarea name="description" id="description" rows="5">{{ old('description') ?? $task->description }}
             </textarea>
             @error('description')
                 <p class="error-message">{{ $message }}</p>
@@ -47,7 +50,7 @@
             <label for="long_description">
                 Description
             </label>
-            <textarea name="long_description" id="long_description" rows="10">{{ $task->long_description }}
+            <textarea name="long_description" id="long_description" rows="10">{{ old('long_description') ?? $task->long_description }}
         </textarea>
             @error('long_description')
                 <p class="error-message">{{ $message }}</p>
