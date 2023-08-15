@@ -58,6 +58,8 @@ Route::get('/tasks/{id}', function ($id) {
 
 // la classe Request ci permette di accedere alla request tramite metodi come all()
 Route::post('/tasks/store', function (Request $request) {
+
+    //validazione dati
     $data = $request->validate([
         'title' => 'required|max:255',
         'description' => 'required',
@@ -68,9 +70,12 @@ Route::post('/tasks/store', function (Request $request) {
     $task->title = $data['title'];
     $task->description = $data['description'];
     $task->long_description = $data['long_description'];
+
     // il metodo save() esegue un insert query se hai creato un model, altrimenti esegue un update query 
     $task->save();
-    return redirect()->route('tasks.show', ['id' => $task->id]);
+
+    // il metodo with crea un messaggio flash che appare al redirect e scompare al caricamento successivo
+    return redirect()->route('tasks.show', ['id' => $task->id])->with('success', 'Task created successfully!');
 })->name('tasks.store');
 
 // Route::get('/redirect-example', function () {
