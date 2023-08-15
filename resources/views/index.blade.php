@@ -8,7 +8,7 @@
         {{-- cicla sulla collection se questa non è vuota --}}
         @forelse ($tasks as $task)
             <div>
-                <a href=" {{ route('tasks.show', ['id' => $task->id]) }}">
+                <a href=" {{ route('tasks.show', ['task' => $task->id]) }}">
                     <h2>{{ $task->title }}</h2>
                     <p>{{ $task->description }}</p>
                 </a>

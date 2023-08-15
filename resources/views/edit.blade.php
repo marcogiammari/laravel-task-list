@@ -17,7 +17,7 @@
     {{-- {{ $errors }} --}}
     {{-- per accedere al messaggio invece si usa la variabile $message  --}}
 
-    <form action="{{ route('tasks.update', ['id' => $task->id]) }}" method="post">
+    <form action="{{ route('tasks.update', ['task' => $task->id]) }}" method="post">
 
         {{-- il csrf attacca un cookie al browser per verifiche di sicurezza. Può essere un file, ma per progetti più importanti si usa Redis (un db), memcached o altri metodi che trovi in config.session --}}
         @csrf
