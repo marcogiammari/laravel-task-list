@@ -40,13 +40,17 @@ Route::get('/', function () {
 Route::get('/tasks', function () {
     return view('index', [
         // ordina i dati in base alla colonna "created at"
-        'tasks' => Task::latest()->where('completed', true)->get()
+        'tasks' => Task::latest()->get()
 
         // possiamo incatenare diversi metodi nella nostra query: where, select... in questo caso si parla di "query builder"
         // Task::latest()->where('completed', true)->get()
         // Task::select('id', 'title')->where('completed', true)->get()
     ]);
 })->name('tasks.index');
+
+Route::get('/tasks/{id}/edit', function ($id) {
+    return view('edit', ['task' => Task::findOrFail($id)]);
+})->name('tasks.edit');
 
 Route::view('/tasks/create', 'create')->name('tasks.create');
 
@@ -77,6 +81,24 @@ Route::post('/tasks/store', function (Request $request) {
     // il metodo with crea un messaggio flash che appare al redirect e scompare al caricamento successivo
     return redirect()->route('tasks.show', ['id' => $task->id])->with('success', 'Task created successfully!');
 })->name('tasks.store');
+
+Route::put('/tasks/{id}', function ($id, Request $request) {
+
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required'
+    ]);
+
+    $task = Task::findOrFail($id);
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+
+    $task->save();
+
+    return redirect()->route('tasks.show', ['id' => $task->id])->with('success', 'Task updated successfully!');
+})->name('tasks.update');
 
 // Route::get('/redirect-example', function () {
 //     return redirect()->route('tasks.index');
