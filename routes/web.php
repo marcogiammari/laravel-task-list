@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::get('/tasks', function () {
     return view('index', [
         // ordina i dati in base alla colonna "created at" e impagina 5 risultati
-        'tasks' => Task::latest()->paginate(5)
+        'tasks' => Task::latest()->paginate(3)
 
         // possiamo incatenare diversi metodi nella nostra query: where, select... in questo caso si parla di "query builder"
         // Task::latest()->where('completed', true)->get()
