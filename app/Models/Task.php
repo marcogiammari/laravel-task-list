@@ -9,7 +9,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    // questa proprietà permette il mass asssignment nel create e nell'update
+    // questa proprietà permette il mass asssignment nel create e nell'update. non aggiungere dati sensibili in queste proprietà
     protected $fillable = [
         'title',
         'description',

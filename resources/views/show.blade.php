@@ -11,4 +11,14 @@
     <div>
         <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">Edit Task</a>
     </div>
+
+    <div>
+
+        {{-- delete form  --}}
+        <form action="{{ route('tasks.destroy', $task) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Delete Task</button>
+        </form>
+    </div>
 @endsection

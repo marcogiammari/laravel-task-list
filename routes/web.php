@@ -21,6 +21,8 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
+// index
+
 Route::get('/tasks', function () {
     return view('index', [
         // ordina i dati in base alla colonna "created at"
@@ -32,12 +34,17 @@ Route::get('/tasks', function () {
     ]);
 })->name('tasks.index');
 
+// edit
+
 Route::get('/tasks/{task}/edit', function (Task $task) {
 
     // route model binding: di default laravel cerca l'id del task, quindi possiamo evitare di usare l'id e usare direttamente il model Task
 
     return view('edit', ['task' => $task]);
 })->name('tasks.edit');
+
+
+// create
 
 Route::view('/tasks/create', 'create')->name('tasks.create');
 
@@ -46,6 +53,9 @@ Route::get('/tasks/{task}', function (Task $task) {
     // riporta alla pagina 404 se non trova l'id nel db
     return view('show', ['task' => $task]);
 })->name('tasks.show');
+
+
+// store
 
 // la classe Request ci permette di accedere alla request tramite metodi come all()
 Route::post('/tasks/store', function (TaskRequest $request) {
@@ -67,6 +77,9 @@ Route::post('/tasks/store', function (TaskRequest $request) {
     return redirect()->route('tasks.show', ['task' => $task])->with('success', 'Task created successfully!');
 })->name('tasks.store');
 
+
+// update
+
 Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
 
     $task->update($request->validated());
@@ -77,6 +90,15 @@ Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
 // Route::get('/redirect-example', function () {
 //     return redirect()->route('tasks.index');
 // });
+
+
+// delete
+
+Route::delete('/tasks/{task}', function (Task $task) {
+    $task->delete();
+
+    return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
+})->name('tasks.destroy');
 
 Route::fallback(function () {
     return '404: questa rotta non esiste';
