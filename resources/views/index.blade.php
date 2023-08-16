@@ -4,6 +4,9 @@
 
 @section('content')
     <div>
+        <a href="{{ route('tasks.create') }}">
+            <h2>New Task</h2>
+        </a>
 
         {{-- cicla sulla collection se questa non è vuota --}}
         @forelse ($tasks as $task)

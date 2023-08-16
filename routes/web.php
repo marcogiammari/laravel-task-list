@@ -100,6 +100,20 @@ Route::delete('/tasks/{task}', function (Task $task) {
     return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
 })->name('tasks.destroy');
 
+
+// toggle complete
+
+Route::put('/tasks/{task}/toggle-complete', function (Task $task) {
+
+    // chiama il metodo presente nel Model Task per togglare la proprietà completed
+    $task->toggleComplete();
+
+    // il metodo built-in back() fa una redirect alla pagina da cui arriva la request
+    return redirect()->back()->with('success', 'Task updated successfully!');
+})->name('tasks.toggle-complete');
+
+// fallback
+
 Route::fallback(function () {
     return '404: questa rotta non esiste';
 });

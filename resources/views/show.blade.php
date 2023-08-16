@@ -8,8 +8,31 @@
     @else
         No Description
     @endif
+
+    <p>{{ $task->created_at }}</p>
+    <p>{{ $task->updated_at }}</p>
+
+    <p>
+        @if ($task->completed)
+            Completed
+            &check;
+        @else
+            Not completed
+            &cross;
+        @endif
+    </p>
+
     <div>
-        <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">Edit Task</a>
+        <a href="{{ route('tasks.edit', $task) }}">Edit Task</a>
+    </div>
+
+    {{-- toggle-complete  --}}
+    <div>
+        <form action="{{ route('tasks.toggle-complete', $task) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <button type="submit">Mark as {{ $task->completed ? 'not completed' : 'completed' }}</button>
+        </form>
     </div>
 
     <div>
